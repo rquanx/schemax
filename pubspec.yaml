@@ -8,8 +8,13 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  events_emitter: ^0.6.0
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.4.1
+  flutter_hooks: ^0.21.3+1
+  graphx: ^1.0.14
+  hooks_riverpod: ^3.0.3
 
 dev_dependencies:
   flutter_test:
