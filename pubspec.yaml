@@ -1,6 +1,6 @@
 name: schemax
-description: "A new Flutter package project."
-version: 0.0.1
+description: 'Schema-driven GraphX renderer for interactive, zoomable canvases in Flutter.'
+version: 1.0.0
 homepage:
 
 environment:
