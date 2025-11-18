@@ -6,3 +6,7 @@ export 'plugins/coordinate_axis.dart';
 export 'plugins/interactive.dart';
 export 'plugins/viewport_visibility.dart';
 export 'helper/zoom.dart';
+export './utils/animate.dart';
+export './utils/file.dart';
+export './utils/image.dart';
+export './utils/utils.dart';
