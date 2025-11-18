@@ -1,12 +1,12 @@
-# Schemax
+# SchemaX
 
-Schemax is a Flutter + [GraphX](https://pub.dev/packages/graphx) rendering engine that turns structured schema data into highly interactive canvases. Provide a JSON schema describing the background and elements of your scene and Schemax delivers a widget with panning, zooming, animation hooks, and a plugin system.
+SchemaX is a Flutter + [GraphX](https://pub.dev/packages/graphx) rendering engine that turns structured schema data into highly interactive canvases. Provide a JSON schema describing the background and elements of your scene and SchemaX delivers a widget with panning, zooming, animation hooks, and a plugin system.
 
-> Build touch-friendly, schema-driven canvases for Flutter. Schemax handles viewport math so you can focus on the story your scene tells.
+> Build touch-friendly, schema-driven canvases for Flutter. SchemaX handles viewport math so you can focus on the story your scene tells.
 
 ## Highlights
 
-- **Schema-first workflow** — Encode backgrounds, element bounds, and custom metadata with `Schema`/`SchemaElement`. Schemax restores the layout on any screen and enforces clamped bounds.
+- **Schema-first workflow** — Encode backgrounds, element bounds, and custom metadata with `Schema`/`SchemaElement`. SchemaX restores the layout on any screen and enforces clamped bounds.
 - **Smooth gestures** — Dragging, pinch-to-zoom, focus points, and `tweenTo`/`tweenBack` animations are built in, making it easy to guide the user to a specific element.
 - **Extensible plugins** — Implement `InteractivePlugin` to react to gestures and render overlays such as coordinate axes or visibility trackers (`ViewportVisibilityPlugin`).
 - **Event hooks** — Use `renderer.onClick`/`renderer.onZoom` to coordinate Flutter UI with GraphX nodes.
@@ -87,14 +87,14 @@ flutter pub get
 
 ## Schema Structure
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `background` | `String` | URL or asset path for the background image. Images are loaded via `loadImage` and cached automatically. |
-| `align` | `center` / `left-top` | Default alignment of the background on the stage. `left-top` works with `focusPointX/Y` to define the initial viewport. |
-| `scaleable` / `draggable` | `bool` | Enable or disable pinch-zoom/drag gestures. |
-| `options.minScale` / `maxScale` | `double` | Zoom limits applied by `RendererCore.clampedScale`. |
-| `options.focusPointX/Y` | `double` | Initial focus point in schema coordinates. |
-| `elements` | `List<Map>` | Raw element configuration. Each entry must include `id`, `type`, `x`, `y`, `width`, and `height`. Custom keys are parsed by your `SchemaElement` subclass. |
+| Field                           | Type                  | Description                                                                                                                                                |
+| ------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `background`                    | `String`              | URL or asset path for the background image. Images are loaded via `loadImage` and cached automatically.                                                    |
+| `align`                         | `center` / `left-top` | Default alignment of the background on the stage. `left-top` works with `focusPointX/Y` to define the initial viewport.                                    |
+| `scaleable` / `draggable`       | `bool`                | Enable or disable pinch-zoom/drag gestures.                                                                                                                |
+| `options.minScale` / `maxScale` | `double`              | Zoom limits applied by `RendererCore.clampedScale`.                                                                                                        |
+| `options.focusPointX/Y`         | `double`              | Initial focus point in schema coordinates.                                                                                                                 |
+| `elements`                      | `List<Map>`           | Raw element configuration. Each entry must include `id`, `type`, `x`, `y`, `width`, and `height`. Custom keys are parsed by your `SchemaElement` subclass. |
 
 Register new element types via `SchemaElement.registerType`, then override `build` to return any `GDisplayObject`. See `example/lib/social_map` for an end-to-end implementation.
 
@@ -141,4 +141,4 @@ flutter run
 
 ## License
 
-Schemax is distributed under the MIT License (see `LICENSE`).
+SchemaX is distributed under the MIT License (see `LICENSE`).
