@@ -47,10 +47,7 @@ abstract class Base {
 }
 
 abstract class SchemaElement extends Base {
-  SchemaElement(Map<String, dynamic> config)
-    : id = config['id'],
-      type = config['type'],
-      super(config);
+  SchemaElement(super.config) : id = config['id'], type = config['type'];
 
   final String id;
   final String type;
@@ -98,8 +95,7 @@ abstract class SchemaElement extends Base {
 
 class Schema {
   Schema(Map<String, dynamic> schema)
-    : _schema = Map.unmodifiable(schema),
-      background = schema['background'],
+    : background = schema['background'],
       scaleable = schema['scaleable'] ?? true,
       draggable = schema['draggable'] ?? true,
       options = SchemaOptions.fromMap(schema['options'] ?? {}),
@@ -110,7 +106,6 @@ class Schema {
           .toList());
 
   final String version = '1.0.0';
-  final Map<String, dynamic> _schema;
   final List<SchemaElement> _elements;
   final String background;
   final bool scaleable;

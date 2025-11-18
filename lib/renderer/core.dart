@@ -1,4 +1,3 @@
-import 'dart:ui' show Offset;
 import 'package:graphx/graphx.dart';
 import 'package:events_emitter/events_emitter.dart';
 import 'package:schemax/utils/image.dart';

@@ -1,11 +1,11 @@
 name: schemax
 description: 'Schema-driven GraphX renderer for interactive, zoomable canvases in Flutter.'
 version: 1.0.0
-homepage:
+homepage: https://github.com/rquanx/schemax
 
 environment:
   sdk: ^3.9.2
-  flutter: ">=1.17.0"
+  flutter: '>=1.17.0'
 
 dependencies:
   events_emitter: ^0.6.0
@@ -15,6 +15,7 @@ dependencies:
   flutter_hooks: ^0.21.3+1
   graphx: ^1.0.14
   hooks_riverpod: ^3.0.3
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:

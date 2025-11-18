@@ -7,10 +7,7 @@ import 'package:schemax/renderer/schema.dart';
 /// Emits callbacks when schema elements meet a visibility threshold inside
 /// the viewport.
 class ViewportVisibilityPlugin extends InteractivePlugin {
-  ViewportVisibilityPlugin({
-    this.onVisible,
-    this.visibilityThreshold = 0.25,
-  });
+  ViewportVisibilityPlugin({this.onVisible, this.visibilityThreshold = 0.25});
 
   final double visibilityThreshold;
   final void Function(SchemaElement? element)? onVisible;
