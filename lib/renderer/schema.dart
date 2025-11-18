@@ -6,13 +6,14 @@ import './core.dart';
 
 class SchemaOptions {
   SchemaOptions([Map<String, dynamic> config = const {}])
-      : _config = Map.unmodifiable(config),
-        minScale = (toDouble(config['minScale'])) ?? 1,
-        maxScale = (toDouble(config['maxScale'])) ?? 2,
-        focusPointX =
-            (toDouble(config['focusPointX'] ?? config['fpCenterX'])) ?? 0,
-        focusPointY =
-            (toDouble(config['focusPointY'] ?? config['fpCenterY'])) ?? 0;
+    : _config = Map.unmodifiable(config),
+      minScale = (toDouble(config['minScale'])) ?? 1,
+      maxScale = (toDouble(config['maxScale'])) ?? 2,
+      // 兼容旧版本配置
+      focusPointX =
+          (toDouble(config['focusPointX'] ?? config['fpCenterX'])) ?? 0,
+      focusPointY =
+          (toDouble(config['focusPointY'] ?? config['fpCenterY'])) ?? 0;
 
   final Map<String, dynamic> _config;
   final double minScale;
@@ -32,11 +33,11 @@ class SchemaOptions {
 
 abstract class Base {
   Base(Map<String, dynamic> config)
-      : config = Map.unmodifiable(config),
-        x = toDouble(config['x']) ?? 0,
-        y = toDouble(config['y']) ?? 0,
-        width = toDouble(config['width']) ?? 0,
-        height = toDouble(config['height']) ?? 0;
+    : config = Map.unmodifiable(config),
+      x = toDouble(config['x']) ?? 0,
+      y = toDouble(config['y']) ?? 0,
+      width = toDouble(config['width']) ?? 0,
+      height = toDouble(config['height']) ?? 0;
 
   final Map<String, dynamic> config;
   final double x;
@@ -47,9 +48,9 @@ abstract class Base {
 
 abstract class SchemaElement extends Base {
   SchemaElement(Map<String, dynamic> config)
-      : id = config['id'],
-        type = config['type'],
-        super(config);
+    : id = config['id'],
+      type = config['type'],
+      super(config);
 
   final String id;
   final String type;
@@ -71,7 +72,7 @@ abstract class SchemaElement extends Base {
       SchemaElement.fromMap(json.decode(source) as Map<String, dynamic>);
 
   static final Map<String, SchemaElement Function(Map<String, dynamic>)>
-      _typeRegistry = {};
+  _typeRegistry = {};
 
   // 子类调用此方法注册自己
   static void registerType(
@@ -97,16 +98,16 @@ abstract class SchemaElement extends Base {
 
 class Schema {
   Schema(Map<String, dynamic> schema)
-      : _schema = Map.unmodifiable(schema),
-        background = schema['background'],
-        scaleable = schema['scaleable'] ?? true,
-        draggable = schema['draggable'] ?? true,
-        options = SchemaOptions.fromMap(schema['options'] ?? {}),
-        align = schema['align'] ?? 'center',
-        id = schema['id'],
-        _elements = (((schema['elements'] as List?) ?? [])
-            .map((e) => SchemaElement.fromMap(e))
-            .toList());
+    : _schema = Map.unmodifiable(schema),
+      background = schema['background'],
+      scaleable = schema['scaleable'] ?? true,
+      draggable = schema['draggable'] ?? true,
+      options = SchemaOptions.fromMap(schema['options'] ?? {}),
+      align = schema['align'] ?? 'center',
+      id = schema['id'],
+      _elements = (((schema['elements'] as List?) ?? [])
+          .map((e) => SchemaElement.fromMap(e))
+          .toList());
 
   final String version = '1.0.0';
   final Map<String, dynamic> _schema;
