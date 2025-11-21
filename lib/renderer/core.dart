@@ -364,6 +364,7 @@ class RendererCore extends GSprite {
     if (snapshot == null) {
       return;
     }
+    final currentScale = viewportScale;
     _viewport.tween(
       duration: duration ?? .2,
       scale: snapshot.scale,
@@ -371,6 +372,13 @@ class RendererCore extends GSprite {
       x: snapshot.x,
       y: snapshot.y,
       onComplete: onComplete,
+    );
+    _event.emit(
+      'zoom',
+      ZoomEventData(
+        prevScale: currentScale,
+        nextScale: _previousViewportState?.scale ?? currentScale,
+      ),
     );
   }
 }
