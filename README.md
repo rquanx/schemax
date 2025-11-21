@@ -16,7 +16,7 @@ SchemaX is a Flutter + [GraphX](https://pub.dev/packages/graphx) rendering engin
 
 ```yaml
 dependencies:
-  schemax: ^1.0.0 # use the published version when available
+  schemax: ^1.1.0 # use the published version when available
   # or when developing locally:
   # schemax:
   #   path: ../schemax
