@@ -296,8 +296,22 @@ class RendererCore extends GSprite {
       );
       final focusX = schema.options.focusPointX > 0 ? -rect.x : 0.0;
       final focusY = schema.options.focusPointY > 0 ? -rect.y : 0.0;
-      _viewport.setPosition(focusX, focusY);
-      _viewport.scale = schema.options.focusScale;
+
+      if (schema.options.focusScale != viewportScale) {
+        _viewport.tween(
+          duration: .2,
+          scale: schema.options.focusScale,
+          ease: GEase.easeInOut,
+          x: focusX,
+          y: focusY,
+          onComplete: () {
+            _event.emit(
+              'zoom',
+              ZoomEventData(prevScale: 1, nextScale: schema.options.focusScale),
+            );
+          },
+        );
+      }
     }
   }
 
