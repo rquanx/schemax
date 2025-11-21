@@ -37,7 +37,7 @@ class RendererWidget extends HookConsumerWidget {
             viewportSize: Size(w, h),
             interactivePlugins: interactivePlugins,
           ),
-      [providedController, schema, w, h, interactivePlugins],
+      [providedController, schema, w, h],
     );
 
     useEffect(() {
