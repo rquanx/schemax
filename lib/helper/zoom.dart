@@ -1,5 +1,5 @@
 import 'package:graphx/graphx.dart';
-import 'package:schemax/renderer/core.dart';
+import '../renderer/core.dart';
 
 double calcKeepSizeZoom(double prev, double next) {
   final scale = next / prev;

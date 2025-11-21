@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:schemax/plugins/interactive.dart';
+import '../plugins/interactive.dart';
 
 import 'core.dart';
 
 /// Coordinates lifecycle hooks for interactive plugins.
 class RendererPluginManager {
   RendererPluginManager([List<InteractivePlugin>? plugins])
-      : _plugins = List.unmodifiable(plugins ?? const []);
+    : _plugins = List.unmodifiable(plugins ?? const []);
 
   final List<InteractivePlugin> _plugins;
 

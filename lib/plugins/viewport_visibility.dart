@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:schemax/plugins/interactive.dart';
-import 'package:schemax/renderer/core.dart';
-import 'package:schemax/renderer/schema.dart';
+import '../plugins/interactive.dart';
+import '../renderer/core.dart';
+import '../renderer/schema.dart';
 
 /// Emits callbacks when schema elements meet a visibility threshold inside
 /// the viewport.

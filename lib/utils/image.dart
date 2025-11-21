@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:graphx/graphx.dart';
-import 'package:schemax/utils/file.dart';
+import '../utils/file.dart';
 
 Future<GBitmap> loadNetworkImage(String url) async {
   final texture = await ResourceLoader.loadNetworkTexture(url, cacheId: url);

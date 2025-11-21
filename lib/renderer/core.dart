@@ -1,6 +1,6 @@
 import 'package:graphx/graphx.dart';
 import 'package:events_emitter/events_emitter.dart';
-import 'package:schemax/utils/image.dart';
+import '../utils/image.dart';
 import 'plugin_manager.dart';
 import './schema.dart';
 

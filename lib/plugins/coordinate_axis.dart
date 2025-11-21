@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graphx/graphx.dart';
-import 'package:schemax/plugins/interactive.dart';
-import 'package:schemax/renderer/core.dart';
+import '../plugins/interactive.dart';
+import '../renderer/core.dart';
 
 enum AxisValueMode { schema, transformed }
 
@@ -261,11 +261,16 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     const maxIterations = 2000;
     var iterations = 0;
     while (tickValue <= maxValue + _tickEpsilon && iterations < maxIterations) {
-      final stagePos = _stagePositionForValue(renderer, tickValue, isHorizontal);
+      final stagePos = _stagePositionForValue(
+        renderer,
+        tickValue,
+        isHorizontal,
+      );
       if (stagePos != null && stagePos >= -1 && stagePos <= length + 1) {
         renderedTicks = true;
         final isMajorTick =
-            majorTickInterval > 0 && _isMultipleOf(tickValue, majorTickInterval);
+            majorTickInterval > 0 &&
+            _isMultipleOf(tickValue, majorTickInterval);
         final currentTickLength = isMajorTick
             ? tickLength
             : math.max(1.0, tickLength * minorTickScale);

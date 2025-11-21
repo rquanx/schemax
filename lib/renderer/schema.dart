@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:graphx/graphx.dart';
-import 'package:schemax/utils/utils.dart';
+import '../utils/utils.dart';
 import './core.dart';
 
 class SchemaOptions {

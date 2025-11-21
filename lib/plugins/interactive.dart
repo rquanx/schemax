@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schemax/renderer/core.dart';
+import '../renderer/core.dart';
 
 abstract class InteractivePlugin {
   void onAttach(RendererCore renderer) {}

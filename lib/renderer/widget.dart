@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:graphx/graphx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:schemax/plugins/interactive.dart';
+import '../plugins/interactive.dart';
 import './controller.dart';
 import './core.dart';
 import './schema.dart';
@@ -30,7 +30,8 @@ class RendererWidget extends HookConsumerWidget {
     final h = MediaQuery.of(context).size.height;
     final providedController = controller;
     final rendererController = useMemoized(
-      () => providedController ??
+      () =>
+          providedController ??
           RendererController(
             schema: schema,
             viewportSize: Size(w, h),
