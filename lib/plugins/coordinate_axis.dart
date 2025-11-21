@@ -12,6 +12,9 @@ class CoordinateAxisPlugin extends InteractivePlugin {
   final int horizontalTickCount;
   final int verticalTickCount;
   final double tickLength;
+  final double majorTickInterval;
+  final double minorTickInterval;
+  final double minorTickScale;
   final Color axisColor;
   Color? axisBgColor;
   final TextStyle? labelStyle;
@@ -33,6 +36,9 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     this.horizontalTickCount = 12,
     this.verticalTickCount = 12,
     this.tickLength = 16,
+    this.majorTickInterval = 50,
+    this.minorTickInterval = 10,
+    this.minorTickScale = .5,
     this.axisColor = const Color(0xB3FFFFFF),
     this.labelStyle,
     this.panelMargin = const EdgeInsets.all(12),
@@ -122,19 +128,22 @@ class CoordinateAxisPlugin extends InteractivePlugin {
 
     final labels = _topLabels!;
     _clearChildren(labels);
-    final ticks = math.max(2, horizontalTickCount);
-    final dx = width / (ticks - 1);
-    for (var i = 0; i < ticks; i++) {
-      final x = dx * i;
-      line.graphics.moveTo(x, 0);
-      line.graphics.lineTo(x, tickLength);
-      final label = _buildLabel(
-        _formatValue(_valueAt(stageX: x, stageY: 0, isX: true)),
+    final drewTicks = _drawValueAlignedAxisTicks(
+      renderer: renderer,
+      line: line,
+      labels: labels,
+      isHorizontal: true,
+      length: width,
+    );
+    if (!drewTicks) {
+      _drawEvenlyDistributedTicks(
+        renderer: renderer,
+        line: line,
+        labels: labels,
+        isHorizontal: true,
+        length: width,
+        tickCount: horizontalTickCount,
       );
-      final bounds = label.bounds;
-      final labelWidth = bounds?.width ?? 0;
-      label.setPosition(x - labelWidth / 2, tickLength + 2);
-      labels.addChild(label);
     }
   }
 
@@ -152,20 +161,22 @@ class CoordinateAxisPlugin extends InteractivePlugin {
 
     final labels = _leftLabels!;
     _clearChildren(labels);
-    final ticks = math.max(2, verticalTickCount);
-    final dy = height / (ticks - 1);
-    for (var i = 0; i < ticks; i++) {
-      final y = dy * i;
-      line.graphics.moveTo(0, y);
-      line.graphics.lineTo(tickLength, y);
-      final label = _buildLabel(
-        _formatValue(_valueAt(stageX: 0, stageY: y, isX: false)),
+    final drewTicks = _drawValueAlignedAxisTicks(
+      renderer: renderer,
+      line: line,
+      labels: labels,
+      isHorizontal: false,
+      length: height,
+    );
+    if (!drewTicks) {
+      _drawEvenlyDistributedTicks(
+        renderer: renderer,
+        line: line,
+        labels: labels,
+        isHorizontal: false,
+        length: height,
+        tickCount: verticalTickCount,
       );
-      final bounds = label.bounds;
-      final labelHeight = bounds?.height ?? 0;
-      final top = math.max(0.0, y - labelHeight / 2);
-      label.setPosition(tickLength + 4, top);
-      labels.addChild(label);
     }
   }
 
@@ -212,6 +223,120 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     }
   }
 
+  bool _drawValueAlignedAxisTicks({
+    required RendererCore renderer,
+    required GShape line,
+    required GSprite labels,
+    required bool isHorizontal,
+    required double length,
+  }) {
+    if (minorTickInterval <= 0) {
+      return false;
+    }
+
+    final startValue = _valueAt(
+      stageX: isHorizontal ? 0 : 0,
+      stageY: isHorizontal ? 0 : 0,
+      isX: isHorizontal,
+    );
+    final endValue = _valueAt(
+      stageX: isHorizontal ? length : 0,
+      stageY: isHorizontal ? 0 : length,
+      isX: isHorizontal,
+    );
+    final minValue = math.min(startValue, endValue);
+    final maxValue = math.max(startValue, endValue);
+    if (!minValue.isFinite || !maxValue.isFinite) {
+      return false;
+    }
+    if ((maxValue - minValue).abs() < _tickEpsilon) {
+      return false;
+    }
+
+    var tickValue = _ceilToMultiple(minValue, minorTickInterval);
+    if (tickValue > maxValue + _tickEpsilon) {
+      return false;
+    }
+    var renderedTicks = false;
+    const maxIterations = 2000;
+    var iterations = 0;
+    while (tickValue <= maxValue + _tickEpsilon && iterations < maxIterations) {
+      final stagePos = _stagePositionForValue(renderer, tickValue, isHorizontal);
+      if (stagePos != null && stagePos >= -1 && stagePos <= length + 1) {
+        renderedTicks = true;
+        final isMajorTick =
+            majorTickInterval > 0 && _isMultipleOf(tickValue, majorTickInterval);
+        final currentTickLength = isMajorTick
+            ? tickLength
+            : math.max(1.0, tickLength * minorTickScale);
+        if (isHorizontal) {
+          line.graphics.moveTo(stagePos, 0);
+          line.graphics.lineTo(stagePos, currentTickLength);
+        } else {
+          line.graphics.moveTo(0, stagePos);
+          line.graphics.lineTo(currentTickLength, stagePos);
+        }
+        if (isMajorTick) {
+          final label = _buildLabel(_formatValue(tickValue));
+          final bounds = label.bounds;
+          if (isHorizontal) {
+            final labelWidth = bounds?.width ?? 0;
+            label.setPosition(stagePos - labelWidth / 2, tickLength + 2);
+          } else {
+            final labelHeight = bounds?.height ?? 0;
+            final top = math.max(0.0, stagePos - labelHeight / 2);
+            label.setPosition(tickLength + 4, top);
+          }
+          labels.addChild(label);
+        }
+      }
+      iterations++;
+      tickValue += minorTickInterval;
+    }
+    return renderedTicks;
+  }
+
+  void _drawEvenlyDistributedTicks({
+    required RendererCore renderer,
+    required GShape line,
+    required GSprite labels,
+    required bool isHorizontal,
+    required double length,
+    required int tickCount,
+  }) {
+    final ticks = math.max(2, tickCount);
+    final delta = length / (ticks - 1);
+    for (var i = 0; i < ticks; i++) {
+      final pos = delta * i;
+      if (isHorizontal) {
+        line.graphics.moveTo(pos, 0);
+        line.graphics.lineTo(pos, tickLength);
+      } else {
+        line.graphics.moveTo(0, pos);
+        line.graphics.lineTo(tickLength, pos);
+      }
+      final label = _buildLabel(
+        _formatValue(
+          _valueAt(
+            stageX: isHorizontal ? pos : 0,
+            stageY: isHorizontal ? 0 : pos,
+            isX: isHorizontal,
+          ),
+        ),
+      );
+      final bounds = label.bounds;
+      if (isHorizontal) {
+        final labelWidth = bounds?.width ?? 0;
+        label.setPosition(pos - labelWidth / 2, tickLength + 2);
+      } else {
+        final labelHeight = bounds?.height ?? 0;
+        final top = math.max(0.0, pos - labelHeight / 2);
+        label.setPosition(tickLength + 4, top);
+      }
+      labels.addChild(label);
+    }
+  }
+
   double _valueAt({
     required double stageX,
     required double stageY,
@@ -231,6 +356,49 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     }
   }
 
+  double? _stagePositionForValue(
+    RendererCore renderer,
+    double value,
+    bool isX,
+  ) {
+    if (!value.isFinite) {
+      return null;
+    }
+    final viewportScale = renderer.viewportScale;
+    final viewportOffset = isX ? renderer.viewportX : renderer.viewportY;
+    if (valueMode == AxisValueMode.transformed) {
+      return value * viewportScale + viewportOffset;
+    }
+    final canvas = renderer.canvasRect;
+    final origin = isX ? canvas.x : canvas.y;
+    final scaled = origin + value * canvas.scale;
+    return scaled * viewportScale + viewportOffset;
+  }
+
+  double _ceilToMultiple(double value, double step) {
+    final normalizedRemainder = _positiveRemainder(value, step);
+    if (normalizedRemainder.abs() < _tickEpsilon) {
+      return value - normalizedRemainder;
+    }
+    return value + (step - normalizedRemainder);
+  }
+
+  bool _isMultipleOf(double value, double step) {
+    if (step <= 0) {
+      return false;
+    }
+    final remainder = _positiveRemainder(value, step);
+    return remainder < _tickEpsilon || (step - remainder) < _tickEpsilon;
+  }
+
+  double _positiveRemainder(double value, double step) {
+    var remainder = value % step;
+    if (remainder < 0) {
+      remainder += step.abs();
+    }
+    return remainder;
+  }
+
   String _formatValue(double value) {
     final absValue = value.abs();
     if (absValue >= 1000) {
@@ -244,4 +412,6 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     }
     return value.toStringAsFixed(0);
   }
+
+  static const double _tickEpsilon = 1e-4;
 }
