@@ -189,7 +189,7 @@ class CoordinateAxisPlugin extends InteractivePlugin {
     }
     final xValue = _formatValue(_valueAt(stageX: 0, stageY: 0, isX: true));
     final yValue = _formatValue(_valueAt(stageX: 0, stageY: 0, isX: false));
-    final scaleValue = renderer.scale.toStringAsFixed(2);
+    final scaleValue = renderer.viewportScale.toStringAsFixed(2);
     infoText.text = 'x: $xValue\ny: $yValue\nscale: $scaleValue';
     final bounds = infoText.bounds;
     final textWidth = bounds?.width ?? 0;
