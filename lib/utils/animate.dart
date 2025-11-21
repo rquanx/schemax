@@ -7,7 +7,7 @@ LoopManager breathingAnimation(GDisplayObject element, int duration) {
   void run() {
     element.tween(
       duration: second,
-      scale: source / 1.5,
+      scale: source / 2,
       ease: GEase.easeOut,
       onComplete: () {
         element.tween(duration: second, scale: source, ease: GEase.easeOut);
