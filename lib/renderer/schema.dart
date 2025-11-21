@@ -13,13 +13,14 @@ class SchemaOptions {
       focusPointX =
           (toDouble(config['focusPointX'] ?? config['fpCenterX'])) ?? 0,
       focusPointY =
-          (toDouble(config['focusPointY'] ?? config['fpCenterY'])) ?? 0;
-
+          (toDouble(config['focusPointY'] ?? config['fpCenterY'])) ?? 0,
+      focusScale = (toDouble(config['focusScale'] ?? config['fpScale'])) ?? 0;
   final Map<String, dynamic> _config;
   final double minScale;
   final double maxScale;
   final double focusPointX;
   final double focusPointY;
+  final double focusScale;
 
   Map<String, dynamic> toMap() => Map<String, dynamic>.from(_config);
 

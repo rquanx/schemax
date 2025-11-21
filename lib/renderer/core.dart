@@ -297,6 +297,7 @@ class RendererCore extends GSprite {
       final focusX = schema.options.focusPointX > 0 ? -rect.x : 0.0;
       final focusY = schema.options.focusPointY > 0 ? -rect.y : 0.0;
       _viewport.setPosition(focusX, focusY);
+      _viewport.scale = schema.options.focusScale;
     }
   }
 
