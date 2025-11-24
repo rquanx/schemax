@@ -92,6 +92,7 @@ abstract class SchemaElement extends Base {
 
   // 抽象方法：子类必须实现
   Future<GDisplayObject> build(RendererCore renderer);
+  GDisplayObject? object;
 }
 
 class Schema {

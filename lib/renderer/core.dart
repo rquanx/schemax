@@ -144,6 +144,7 @@ class RendererCore extends GSprite {
   Future<void> _buildElements() async {
     for (final element in (schema.elements)) {
       final ele = await element.build(this);
+      element.object = ele;
       _viewport.addChild(ele);
     }
   }
